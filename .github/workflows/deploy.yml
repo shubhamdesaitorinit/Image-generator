@@ -51,7 +51,7 @@ jobs:
           if [ "$FORCE_DEPLOY" = "true" ]; then
             npm run lint:ci:force
           else
-            npm run lint:ci
+            npm run lint
           fi
 
       - name: Deploy Image Generator
