@@ -1,7 +1,6 @@
 # .github/workflows/deploy.yaml
 ---
 name: Deploy
-environment: Cloudflare
 
 on:
   push:
