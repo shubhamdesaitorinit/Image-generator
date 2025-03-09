@@ -54,14 +54,21 @@ jobs:
             npm run lint
           fi
 
+      - name: Substitute env variables in wrangler.jsonC
+        run: |
+          sed -i "s/\$CLOUDFLARE_ACCOUNT_ID/${{ secrets.CLOUDFLARE_ACCOUNT_ID }}/g" wrangler.jsonC
+          sed -i "s/\$CLOUDFLARE_API_TOKEN/${{ secrets.CLOUDFLARE_API_TOKEN }}/g" wrangler.jsonC
+          sed -i "s/\$CLOUDFLARE_AUTH_KEY/${{ secrets.CLOUDFLARE_AUTH_KEY }}/g" wrangler.jsonC
+          sed -i "s/\$CLOUDFLARE_EMAIL/${{ secrets.CLOUDFLARE_EMAIL }}/g" wrangler.jsonC
+
       - name: Deploy Image Generator
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_AUTH_KEY: ${{ secrets.CLOUDFLARE_AUTH_KEY }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
-        run: npm run deploy
-      
+        run: wrangler deploy --account-id $CLOUDFLARE_ACCOUNT_ID --api-token $CLOUDFLARE_API_TOKEN
+
   post_deploy:
     runs-on: ubuntu-latest
     needs: deploy
